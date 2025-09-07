@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<project version="4">
-  <component name="ScalaCompilerConfiguration">
-    <option name="separateProdTestSources" value="true" />
-    <profile name="sbt 1" modules="recfun,recfun.main,recfun.test,recfun_8473,recfun_8473.main,recfun_8473.test" />
-  </component>
-</project>
