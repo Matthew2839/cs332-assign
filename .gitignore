@@ -4,6 +4,7 @@ project/target/
 project/project/
 .bsp/
 lib_managed/
+!src/
 
 # IntelliJ IDEA
 .idea/
