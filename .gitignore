@@ -1,0 +1,18 @@
+# sbt
+target/
+project/target/
+project/project/
+.bsp/
+lib_managed/
+
+# IntelliJ IDEA
+.idea/
+*.iml
+*.iws
+out/
+
+# Windows
+Thumbs.db
+
+# Logs
+*.log
