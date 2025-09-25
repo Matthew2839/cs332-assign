@@ -22,7 +22,7 @@ Please manually install sbt **version 0.13.18** (the latest 0.13.x legacy versio
 
 Once installed, run the following sbt commands inside your project directory:
 ```shell
-sbt // Launches the sbt shell and downloads project dependencies
+sbt // Launches the sbt shell and downloads project dependencies, update sbt.version at build.properties to 0.13.18
 sbt sbtVersion // Checks the sbt version
 sbt run // Compiles and runs the main class
 sbt test // Compiles and runs tests
