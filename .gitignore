@@ -1,10 +1,10 @@
-# sbt
+# Guideline: Do NOT add binary/intermediate files produced during compilation
+
+# SBT / Scala
 target/
 project/target/
-project/project/
-.bsp/
-lib_managed/
-!src/
+*.class
+*.jar
 
 # IntelliJ IDEA
 .idea/
@@ -12,8 +12,11 @@ lib_managed/
 *.iws
 out/
 
-# Windows
-Thumbs.db
+# MacOS
+.DS_Store
 
-# Logs
+# 기타
 *.log
+*.tmp
+.vscode/
+.metals/
