@@ -44,4 +44,7 @@ class HuffmanSuite extends FunSuite {
       assert(decode(t1, encode(t1)("ab".toList)) === "ab".toList)
     }
   }
+  test("I really wonder what the secret code is") {
+    decodedSecret
+  }
 }

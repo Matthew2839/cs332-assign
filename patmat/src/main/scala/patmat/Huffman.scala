@@ -165,7 +165,7 @@ object Huffman {
     val origin = tree
     val answer: List[Char] = List()
     def iter(tree: CodeTree, bits: List[Bit], ans: List[Char]): List[Char] = {
-      if (bits == Nil) ans
+      if (bits == Nil) ans ::: chars(tree)
       else {
         tree match {
           case Fork(left, right, _, _) => {
