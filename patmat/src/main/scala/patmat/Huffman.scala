@@ -97,7 +97,7 @@ object Huffman {
    */
   def singleton(trees: List[CodeTree]): Boolean = {
     trees match {
-      case _ :: Nill => true
+      case _ :: Nil => true
       case _ => false
     }
   }
