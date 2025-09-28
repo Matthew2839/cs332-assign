@@ -247,7 +247,12 @@ object Huffman {
    * sub-trees, think of how to build the code table for the entire tree.
    */
   def convert(tree: CodeTree): CodeTable = {
-
+    def iter(tree: CodeTree, path: List[Bit]): CodeTable = tree match {
+      case Leaf(c, _) => List((c, path))
+      case Fork(left, right, _, _) =>
+        mergeCodeTables(iter(left, path :+ 0), iter(right, path :+ 1))
+    }
+    iter(tree, Nil)
   }
 
   /**
@@ -255,7 +260,9 @@ object Huffman {
    * use it in the `convert` method above, this merge method might also do some transformations
    * on the two parameter code tables.
    */
-  def mergeCodeTables(a: CodeTable, b: CodeTable): CodeTable = ???
+  def mergeCodeTables(a: CodeTable, b: CodeTable): CodeTable = {
+    a ::: b
+  }
 
   /**
    * This function encodes `text` according to the code tree `tree`.
