@@ -270,5 +270,12 @@ object Huffman {
    * To speed up the encoding process, it first converts the code tree to a code table
    * and then uses it to perform the actual encoding.
    */
-  def quickEncode(tree: CodeTree)(text: List[Char]): List[Bit] = ???
+  def quickEncode(tree: CodeTree)(text: List[Char]): List[Bit] = {
+    val codeTable = convert(tree)
+    def encodeLoop(table: CodeTable, text: List[Char]): List[Bit] = {
+      if (text == Nil) Nil
+      else codeBits(table)(text.head) ::: encodeLoop(table, text.tail)
+    }
+    encodeLoop(codeTable, text)
+  }
 }
