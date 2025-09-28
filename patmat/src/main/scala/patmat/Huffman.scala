@@ -89,7 +89,7 @@ object Huffman {
    * of a leaf is the frequency of the character.
    */
   def makeOrderedLeafList(freqs: List[(Char, Int)]): List[Leaf] = {
-    freqs.map(tup => Leaf(tup._1, tup._2)).sortBy(-_.weight)
+    freqs.map(tup => Leaf(tup._1, tup._2)).sortBy(_.weight)
   }
 
   /**
