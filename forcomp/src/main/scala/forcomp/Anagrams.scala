@@ -91,7 +91,19 @@ object Anagrams {
    *  Note that the order of the occurrence list subsets does not matter -- the subsets
    *  in the example above could have been displayed in some other order.
    */
-  def combinations(occurrences: Occurrences): List[Occurrences] = ???
+  def combinations(occurrences: Occurrences): List[Occurrences] = occurrences match {
+    case Nil => List(Nil)
+    case (ch, n) :: tail => {
+      val tailComb = combinations(tail)
+      val heads = (0 to n).toList.map(k => if (k == 0) Nil else List((ch, k)))
+      for {
+        h <- heads
+        t <- tailComb
+      } yield h ++ t
+    }
+  }
+
+
 
   /** Subtracts occurrence list `y` from occurrence list `x`.
    * 
