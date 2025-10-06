@@ -103,8 +103,6 @@ object Anagrams {
     }
   }
 
-
-
   /** Subtracts occurrence list `y` from occurrence list `x`.
    * 
    *  The precondition is that the occurrence list `y` is a subset of
@@ -115,7 +113,13 @@ object Anagrams {
    *  Note: the resulting value is an occurrence - meaning it is sorted
    *  and has no zero-entries.
    */
-  def subtract(x: Occurrences, y: Occurrences): Occurrences = ???
+  def subtract(x: Occurrences, y: Occurrences): Occurrences = {
+    val yMap = y.toMap.withDefaultValue(0)
+    val ans = x.foldLeft(List.empty[(Char, Int)]) {
+      case (acc, (k, v)) => (k, (v - yMap(k))) :: acc
+    }
+    ans.filter(_._2 != 0 ).sortBy(_._1)
+  }
 
   /** Returns a list of all anagram sentences of the given sentence.
    *  
