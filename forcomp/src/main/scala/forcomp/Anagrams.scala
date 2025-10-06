@@ -161,6 +161,29 @@ object Anagrams {
    *
    *  Note: There is only one anagram of an empty sentence.
    */
-  def sentenceAnagrams(sentence: Sentence): List[Sentence] = ???
+  def sentenceAnagrams(sentence: Sentence): List[Sentence] = {
+    val occ0 = sentenceOccurrences(sentence)
+    def loop(occ: Occurrences): List[Sentence] =
+      if (occ.isEmpty) List(Nil)
+      else {
+        for {
+          comb   <- combinations(occ)
+          if comb.nonEmpty
+          words  <- dictionaryByOccurrences.get(comb).toList
+          word   <- words
+          rest   <- loop(subtract(occ, comb))
+        } yield word :: rest
+      }
+
+    loop(occ0)
+  }
 
 }
+// combinations를 만들 수 있는(사전에 있는) 단어조합으로만 구성되게 필터링한다.
+// 첫 번째 경우를 고르고, 나머지들에 대해 재귀적인 연산을 한다.
+// 재귀 과정에서 나머지를 필터링할 때,
+// 1. 나머지가 없을 경우 - 완벽하게 정리됐으므로 마무리한다.
+// 2. 나머지가 있는데 필터링해서 없어졌을 경우 - 아나그램 생성 불가로 해당 경로는 전부 제거한다.
+// 3. 나머지가 있고 필터링해서 있을 경우 - 또 첫 번째 경우를 고르고, 1이나 2가 될 때까지 나머지들에 대해 재귀적인 연산을 한다.
+// head는 0부터 끝까지 조합 중에 하나 골라서 for yield로 모든 단어 만들고, tail은 head 에 들어간거 subtract 해서 재귀연산
+// sentenceOcc에서 Nil을 제외하고, 하나씩 subtract하면서 남은 거에서 또 0 to N으로 subtract하면서 모든 경우를 만든다.
