@@ -69,6 +69,7 @@ trait Solver extends GameDef {
    */
   def from(initial: Stream[(Block, List[Move])],
            explored: Set[Block]): Stream[(Block, List[Move])] = {
+    if(initial.isEmpty) Stream.empty
     val next = for {
       init <- initial
       (blocks, moveLists) <- newNeighborsOnly(neighborsWithHistory(init._1, init._2), explored)
