@@ -60,7 +60,8 @@ trait NodeScala {
       Future {
           while (ct.nonCancelled) {
             val nextReq = listener.nextRequest()
-            for {(req, exc) <- nextReq} yield respond(exc, ct, handler(req))
+            val (req, exc) = Await.result(nextReq, Duration.Inf)
+            respond(exc, ct, handler(req))
         }
       }
     }
