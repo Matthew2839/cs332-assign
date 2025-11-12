@@ -14,6 +14,7 @@ import java.net.InetSocketAddress
 /** Contains utilities common to the NodeScala© framework.
  */
 trait NodeScala {
+
   import NodeScala._
 
   def port: Int
@@ -21,13 +22,13 @@ trait NodeScala {
   def createListener(relativePath: String): Listener
 
   /** Uses the response object to respond to the write the response back.
-   *  The response should be written back in parts, and the method should
-   *  occasionally check that server was not stopped, otherwise a very long
-   *  response may take very long to finish.
+   * The response should be written back in parts, and the method should
+   * occasionally check that server was not stopped, otherwise a very long
+   * response may take very long to finish.
    *
-   *  @param exchange     the exchange used to write the response back
-   *  @param token        the cancellation token
-   *  @param body         the response to write back
+   * @param exchange the exchange used to write the response back
+   * @param token    the cancellation token
+   * @param body     the response to write back
    */
   private def respond(exchange: Exchange, token: CancellationToken, response: Response): Unit = {
     try {
@@ -41,17 +42,30 @@ trait NodeScala {
   }
 
   /** A server:
-   *  1) creates and starts an http listener
-   *  2) creates a cancellation token (hint: use one of the `Future` companion methods)
-   *  3) as long as the token is not cancelled and there is a request from the http listener,
-   *     asynchronously process that request using the `respond` method
+   * 1) creates and starts an http listener
+   * 2) creates a cancellation token (hint: use one of the `Future` companion methods)
+   * 3) as long as the token is not cancelled and there is a request from the http listener,
+   * asynchronously process that request using the `respond` method
    *
-   *  @param relativePath   a relative path on which to start listening
-   *  @param handler        a function mapping a request to a response
-   *  @return               a subscription that can stop the server and all its asynchronous operations *entirely*
+   * @param relativePath a relative path on which to start listening
+   * @param handler      a function mapping a request to a response
+   * @return a subscription that can stop the server and all its asynchronous operations *entirely*
    */
-  def start(relativePath: String)(handler: Request => Response): Subscription = ???
-
+  def start(relativePath: String)(handler: Request => Response): Subscription = {
+    val listener = createListener(relativePath)
+    val listenerSubscription = listener.start()
+    val cts = CancellationTokenSource()
+    val ct = cts.cancellationToken
+    val f = Future.run() { ct =>
+      Future {
+          while (ct.nonCancelled) {
+            val nextReq = listener.nextRequest()
+            for {(req, exc) <- nextReq} yield respond(exc, ct, handler(req))
+        }
+      }
+    }
+    Subscription(listenerSubscription, cts)
+  }
 }
 
 
